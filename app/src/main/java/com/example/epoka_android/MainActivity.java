@@ -14,6 +14,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
@@ -32,18 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        textView.setText("Response: " + response.toString());
+                        try {
+                            String aJsonString = response.getString("name");
+                            textView.setText(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        textView.setText("Response: " + error.toString());
+                        textView.setText("Error: " + error.toString());
 
                     }
                 });
 
-// Access the RequestQueue through your singleton class.
         MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
     }
 }
