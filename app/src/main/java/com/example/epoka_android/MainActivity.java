@@ -2,6 +2,8 @@ package com.example.epoka_android;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Context context = this;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -26,12 +29,15 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLogin(View view) {
         String url = this.base_url + "api/login";
-        final TextView tv_error = (TextView) findViewById(R.id.tv_error);
+        TextView tv_error = (TextView) findViewById(R.id.tv_response);
+        TextView id = (TextView) findViewById(R.id.edt_id);
+        TextView password = (TextView) findViewById(R.id.edt_password) ;
+
 
         JSONObject postData = new JSONObject();
         try {
-            postData.put("id", 1);
-            postData.put("password", 1);
+            postData.put("id", id.getText());
+            postData.put("password", password.getText());
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -42,35 +48,25 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        tv_error.setText(response.toString());
+                        if (response.has("error")) {
+                            try {
+                                tv_error.setText(response.getString("error"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            if (response.has("id")) {
+                                Intent intent = new Intent(MainActivity.this, HomePage.class);
+                                intent.putExtra("user", response.toString());
+                                startActivity(intent);
+                            }
+                        }
                     }
                 }, new Response.ErrorListener() {
 
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         tv_error.setText(error.toString());
-                    }
-                });
-
-        MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-    }
-
-    public void getMissionById (Integer id) {
-        String url = this.base_url + "api/missions";
-        final TextView textView = (TextView) findViewById(R.id.edt_id);
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        textView.setText(response.toString());
-                    }
-                }, new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        textView.setText("Error: " + error.toString());
                     }
                 });
 
