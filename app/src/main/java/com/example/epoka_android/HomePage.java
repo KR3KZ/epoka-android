@@ -42,5 +42,10 @@ public class HomePage extends AppCompatActivity {
         Intent intent = new Intent(this, AddMission.class);
         intent.putExtra("user", user.toString());
         startActivity(intent);
+        finish();
+    }
+
+    public void quit(View view) {
+        finish();
     }
 }

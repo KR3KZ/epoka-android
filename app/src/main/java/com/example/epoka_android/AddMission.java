@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -122,12 +123,14 @@ public class AddMission extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         if (response.has("success")) {
+                            Toast toast;
                             try {
                                 if (response.getBoolean("success")) {
-                                    System.out.println("Mission créée avec succès.");
+                                    toast = Toast.makeText(AddMission.this, "Mission créée avec succès.", Toast.LENGTH_LONG);
                                 } else {
-                                    System.out.println("Impossible de créer la mission.");
+                                    toast = Toast.makeText(AddMission.this, "Impossible de créer la mission.", Toast.LENGTH_LONG);
                                 }
+                                toast.show();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
