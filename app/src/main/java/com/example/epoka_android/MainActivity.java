@@ -17,7 +17,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    String base_url = "http://10.0.2.2:8080/";
+    public String base_url = "http://10.0.2.2:8080/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,9 +29,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onLogin(View view) {
         String url = this.base_url + "api/login";
-        TextView tv_error = (TextView) findViewById(R.id.tv_response);
-        TextView id = (TextView) findViewById(R.id.edt_id);
-        TextView password = (TextView) findViewById(R.id.edt_password) ;
+        TextView tv_error = findViewById(R.id.tv_response);
+        TextView id = findViewById(R.id.edt_id);
+        TextView password = findViewById(R.id.edt_password);
 
 
         JSONObject postData = new JSONObject();

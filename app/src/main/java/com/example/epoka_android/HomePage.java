@@ -2,6 +2,7 @@ package com.example.epoka_android;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,6 @@ public class HomePage extends AppCompatActivity {
     public void getUser() {
         try {
             user = new JSONObject(getIntent().getStringExtra("user"));
-            System.out.println("mdddddddddddr " + user);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -36,5 +36,11 @@ public class HomePage extends AppCompatActivity {
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    public void addMission(View view) {
+        Intent intent = new Intent(this, AddMission.class);
+        intent.putExtra("user", user.toString());
+        startActivity(intent);
     }
 }
